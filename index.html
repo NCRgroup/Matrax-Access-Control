@@ -1,11 +1,91 @@
-<!DOCTYPE = html>
-<html>
-    <head>
-        <title>Matrax Acces - Roblox</title>
-    </head>
-    <style>
-    </style>
-    <body>
-        <p> Under Construction</p>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madrax Access - Roblox</title>
+    <!-- Include Auth0 SDK -->
+    <script src="https://cdn.auth0.com/js/auth0/9.16.0/auth0.min.js"></script>
+</head>
+<body>
+    <div id="tabs">
+        <button onclick="showTab('login')">Login</button>
+        <button onclick="showTab('signup')">Signup</button>
+    </div>
+
+    <div id="login" style="display: none;">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" placeholder="Username" id="login-username">
+            <input type="password" placeholder="Password" id="login-password">
+            <button type="button" onclick="login()">Login</button>
+        </form>
+    </div>
+
+    <div id="signup" style="display: none;">
+        <h2>Signup</h2>
+        <form id="signup-form">
+            <input type="text" placeholder="Username" id="signup-username">
+            <input type="password" placeholder="Password" id="signup-password">
+            <input type="text" placeholder="Roblox Place ID" id="signup-place-id">
+            <button type="button" onclick="signup()">Signup</button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize Auth0
+        var auth0 = new auth0.WebAuth({
+            domain: 'dev-6lfld6ue2t5orval.us.auth0.com',
+            clientID: 'I6CWKXZswDj5WAFUSq28jn1KcAIFyibq',
+            redirectUri: 'https://matrax-access-control.pages.dev/', // Callback URL
+            responseType: 'token id_token',
+        });
+
+        function showTab(tabName) {
+            document.getElementById('login').style.display = tabName === 'login' ? 'block' : 'none';
+            document.getElementById('signup').style.display = tabName === 'signup' ? 'block' : 'none';
+        }
+
+        function login() {
+       function login() {
+            var username = document.getElementById('login-username').value;
+            var password = document.getElementById('login-password').value;
+
+            auth0.login({
+                realm: 'Username-Password-Authentication', // Your Auth0 connection name
+                username: username,
+                password: password,
+            }, function (err) {
+                if (err) {
+                    console.error('Error during login:', err);
+                } else {
+                    console.log('Login successful');
+                    // Redirect or handle success
+                }
+            });
+        }
+
+        function signup() {
+            var username = document.getElementById('signup-username').value;
+            var password = document.getElementById('signup-password').value;
+            var placeId = document.getElementById('signup-place-id').value;
+
+            auth0.signup({
+                connection: 'Username-Password-Authentication', // Your Auth0 connection name
+                email: username,
+                password: password,
+                user_metadata: {
+                    place_id: placeId,
+                },
+            }, function (err) {
+                if (err) {
+                    console.error('Error during signup:', err);
+                } else {
+                    console.log('Signup successful');
+                    // Redirect or handle success
+                }
+            });
+        }
+    </script>
+</body>
 </html>
